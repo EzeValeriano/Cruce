@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Flex,
   Box,
@@ -13,13 +13,16 @@ import {
   Text,
   useColorModeValue,
   Spinner,
-
 } from '@chakra-ui/react';
-import {  useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { loginUser } from '../../store/reducers/userReducer';
 
 function LoginForm() {
   // const [loginInput, setLoginInput] = useState({ email: '', password: '' });
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -32,20 +35,26 @@ function LoginForm() {
         .required('El email es requerido'),
       password: Yup.string()
         .required('El password es requerido')
-        .min(6, 'Requiere minimo 6 caracteres'),
+        .min(4, 'Requiere minimo 4 caracteres'),
     }),
 
     onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
         console.log('%c Logging in -->', 'color: #FFEE57', values);
-        alert(JSON.stringify(values, null, 2));
+        // (JSON.stringify(values, null, 2));
+        dispatch(loginUser(values));
+        // props.dispatch(loginUser(values));
         setSubmitting(false);
       }, 1000);
     },
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
+
+  let history = useHistory();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (user.loggedUser) history.push('/');
+  }, [user, history]);
 
   return (
     <Flex

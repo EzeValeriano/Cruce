@@ -2,14 +2,16 @@ import axios from 'axios';
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 // import { useToast } from '@chakra-ui/react';
 
-
-export const loginUser = createAsyncThunk('LOGIN_USER', (userEmail) => {
-  return axios
-    .post('http://localhost:3001/api/users/login', userEmail)
-    .then((response) => {
-      return response.data;
-    });
-});
+export const loginUser = createAsyncThunk(
+  'LOGIN_USER',
+  ({ email, password }) => {
+    return axios
+      .post('http://localhost:3001/api/auth/login', { email, password })
+      .then((response) => {
+        return response.data;
+      });
+  }
+);
 
 export const logoutUser = createAsyncThunk('LOGOUT_USER', () => {
   return axios
@@ -20,7 +22,7 @@ export const logoutUser = createAsyncThunk('LOGOUT_USER', () => {
 });
 
 const initialState = {
-  loggedIn: JSON.parse(localStorage.getItem('user')) || null,
+  loggedUser: JSON.parse(localStorage.getItem('user')) || null,
   allUsers: [],
   allOrders: [],
 };
@@ -28,11 +30,10 @@ const initialState = {
 // const toast = useToast();
 // const statuses = ['success', 'error', 'warning', 'info'];
 
-
-const usersReducer = createReducer(initialState, {
+const userReducer = createReducer(initialState, {
   [loginUser.fulfilled]: (state, action) => {
     localStorage.setItem('user', JSON.stringify(action.payload));
-    state.loggedIn = action.payload;
+    state.loggedUser = action.payload;
     // toast({
     //   title: `Usuario logueado con exito`,
     //   status: 'success',
@@ -58,4 +59,4 @@ const usersReducer = createReducer(initialState, {
   },
 });
 
-export default usersReducer;
+export default userReducer;

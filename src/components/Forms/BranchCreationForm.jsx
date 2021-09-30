@@ -12,12 +12,14 @@ import {
   Spinner,
   SimpleGrid,
   GridItem,
+  useToast,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 function BranchCreationForm() {
   // const [loginInput, setLoginInput] = useState({ email: '', password: '' });
+  const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
@@ -27,9 +29,6 @@ function BranchCreationForm() {
       branchPhone: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email('Email invalido')
-        .required('El email es requerido'),
       branchName: Yup.string()
         .required('Es un campo obligatorio')
         .min(3, 'Requiere minimo 3 caracteres'),
@@ -45,16 +44,21 @@ function BranchCreationForm() {
         .integer()
         .min(3, 'Requiere minimo 3 caracteres'),
     }),
-
     onSubmit: (values, { setSubmitting }) => {
       setTimeout(() => {
         console.log('%c Alta Sucursal -->', 'color: #FFEE57', values);
         alert(JSON.stringify(values, null, 2));
         setSubmitting(false);
       }, 1000);
+      toast({
+        title: 'Submitted!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     },
   });
-
+  console.log('values ->', formik.values);
   return (
     <Box bg={useColorModeValue('gray.50', 'inherit')} p={10}>
       <Box mt={[10, 0]}>
@@ -101,13 +105,12 @@ function BranchCreationForm() {
                       fontWeight="md"
                       color={useColorModeValue('gray.700', 'gray.50')}
                     >
-                      Nombre:
+                      Nombre sucursal:
                     </FormLabel>
                     <Input
                       type="text"
                       name="branchName"
                       id="branchName"
-                      autoComplete="given-name"
                       mt={1}
                       focusBorderColor="brand.400"
                       shadow="sm"

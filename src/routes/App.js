@@ -16,12 +16,14 @@ import LoginForm from '../components/Forms/LoginForm';
 import BranchCreationForm from '../components/Forms/BranchCreationForm';
 import CourierCreationForm from '../components/Forms/CourierCreationForm';
 import UserCreationForm from '../components/Forms/UserCreationForm';
+import Sidebar from '../components/Sidebar';
+
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route exact path="/" render={() => <LoginForm />} />
+        {/* <Route exact path="/" render={() => <LoginForm />} /> */}
         <Route exact path="/orders" render={() => <OrdersList />} />
         <Route
           exact
@@ -41,6 +43,8 @@ function App() {
         <Route exact path="/messenger" render={() => <NewMessenger />} />
         <Route exact path="/messenger/:id" render={() => <Messenger />} />
         <Route exact path="/user" render={() => <UserCreationForm />} />
+        <Route path="/" render={() => <Sidebar />} />
+
       </BrowserRouter>
     </div>
   );
