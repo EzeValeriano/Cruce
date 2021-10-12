@@ -1,5 +1,6 @@
 const express = require("express");
 const mongooseLoader = require("./db");
+const socketLoader = require("./sockets");
 const cors = require("cors");
 
 const routes = require("./routes");
@@ -18,10 +19,12 @@ app.use(function (err, req, res, next) {
   res.status(500).send("Something broke! msg: " + err.message);
 });
 
+const server = socketLoader(app);
+
 mongooseLoader()
   .then(() => {
     console.log("Db loaded and connected");
-    app.listen(3001, () => {
+    server.listen(3001, () => {
       console.log(`Example app listening at http://localhost:3001`);
     });
   })

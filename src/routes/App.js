@@ -9,6 +9,10 @@ import Sidebar from "../components/Sidebar";
 import { sendValidation } from "../store/reducers/usersReducer";
 import { useDispatch, useSelector } from "react-redux";
 
+import { connect } from "../socket";
+
+connect();
+
 function App() {
   const { isValidated, loggedUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();

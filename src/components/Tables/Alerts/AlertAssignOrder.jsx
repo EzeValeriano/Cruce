@@ -16,6 +16,7 @@ import {
   import React from "react";
   import axios from "axios";
   import { useHistory } from "react-router";
+import { socket } from "../../../socket";
   
   function AlertAssignOrder({ messID }) {
     const history = useHistory();
@@ -30,7 +31,7 @@ import {
         })
         .then((data) => {
             console.log("PEDIDO ASIGNADO", data)
-          history.go(0);
+            socket.emit("change-orders");
         });
       };
 

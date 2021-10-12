@@ -54,7 +54,7 @@ const OrdersMessenger = () => {
         }
       )
       .then((res) => setOrders(res.data));
-  }, []);
+  }, [orders]);
 
   const onState = (orderID, state) => {
     axios
@@ -110,6 +110,7 @@ const OrdersMessenger = () => {
                     <TableCell
                       onChange={(e) => {
                         onState(row._id, e.target.value);
+                        // setOrders([...orders])
                       }}
                     >
                       <Select placeholder={row.actualState} size="sm">

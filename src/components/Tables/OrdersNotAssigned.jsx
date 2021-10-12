@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import TablesHead from "./TablesHead";
 import SearchBar from "./SearchBar";
 import AlertAssignOrder from "./Alerts/AlertAssignOrder";
+import { socket } from "../../socket";
 
 //Hooks
 import useTables from "../../hooks/useTables";
@@ -36,13 +37,16 @@ const OrdersNotAssigned = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/order/noassigned", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => setOrders(res.data));
+    const ordersListener = (newOrders) => {
+      setOrders(newOrders);
+    };
+
+    socket.on("new-orders", ordersListener);
+    socket.emit("get-orders", "Sin Asignar");
+
+    return () => {
+      socket.removeAllListeners("new-orders");
+    };
   }, []);
 
   return (
