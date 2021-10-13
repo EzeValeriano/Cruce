@@ -67,7 +67,7 @@ const Order = () => {
             <GridItem colSpan={{ md: 3 }}>
               <Box px={[4, 0]}>
                 <Heading fontSize="lg" fontWeight="medium" lineHeight="6">
-                  Pedido {order._id ? `id#${orderId}` : ''}
+                  Pedido {order._id ? `id#${order.orderId}` : ''}
                 </Heading>
                 <Text
                   mt={1}
